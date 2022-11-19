@@ -40,7 +40,7 @@ let package = Package(
         ),
         .testTarget(
             name: "AttributesGTKViewsTests",
-            dependencies: ["AttributesGTKViews"]
+            dependencies: [.product(name: "Gtk", package: "SwiftGtk"), "AttributesGTKViews"]
         )
     ]
 )
