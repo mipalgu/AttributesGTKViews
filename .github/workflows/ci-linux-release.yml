@@ -31,10 +31,11 @@ jobs:
 
       - name: Start Xserver
         run: |
-          sudo touch /home/root.Xauthority
-          sudo xauth generate :0 /home/root trusted
-          sudo xauth add ${HOST}:0 /home/root $(xxd -l 16 -p /dev/random)
-          sudo startx
+          touch .Xauthority
+          xauth generate :0 . trusted
+          xauth add ${HOST}:0 . $(xxd -l 16 -p /dev/random)
+          sudo echo "allowed_users=anybody" > /etc/X11/Xwrapper.config
+          startx
 
       - name: Checkout repo
         uses: actions/checkout@v2
