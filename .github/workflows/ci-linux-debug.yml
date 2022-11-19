@@ -29,6 +29,9 @@ jobs:
           sudo apt update
           sudo apt install libgtk-4-bin libgtk-4-common libgtk-4-dev libgtk-4-doc libcogl-pango-dev libcogl-path-dev libcogl-dev libpango1.0-dev gir1.2-pango-1.0 libgdk-pixbuf2.0-dev gir1.2-gdkpixbuf-2.0 libgraphene-1.0-dev gir1.2-graphene-1.0 libglib2.0-dev glib-networking libatk1.0-dev libatk-bridge2.0-dev libcogl-dev libcogl-pango-dev gobject-introspection libgirepository1.0-dev libxml2-dev jq xorg openbox xauth xserver-xorg-video-dummy
 
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
       - name: Start Xserver
         run: |
           cd ~
@@ -38,10 +41,6 @@ jobs:
           sudo echo "allowed_users=anybody" > /etc/X11/Xwrapper.config
           sudo X :0 -config ${GITHUB_WORKSPACE}/.dummy-xserver.conf
           startx
-
-
-      - name: Checkout repo
-        uses: actions/checkout@v2
       
       #- name: Reconfigure Private Repo URLs
       #  run: sed -i 's/git@github.com:/https:\/\/${{ secrets.ACCESS_TOKEN }}@github.com\//g' Package.swift
