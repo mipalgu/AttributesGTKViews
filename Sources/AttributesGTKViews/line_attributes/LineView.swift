@@ -70,16 +70,16 @@ struct LineView {
         }
     }
 
-    var view: Text {
+    var view: Entry {
         get {
             guard var cString = value.cString(using: .utf8) else {
-                return Text()
+                return Entry()
             }
             return cString.withUnsafeMutableBufferPointer {
                 guard let firstChar = $0.baseAddress else {
-                    return Text()
+                    return Entry()
                 }
-                return Text(cPointer: firstChar)
+                return Entry(cPointer: firstChar)
             }
         }
         set {
