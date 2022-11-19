@@ -31,12 +31,12 @@ jobs:
 
       - name: Start Xserver
         run: |
-          sudo cd /home/root
-          sudo touch .Xauthority
-          sudo xauth generate :0 . trusted
-          sudo xauth add ${HOST}:0 . $(xxd -l 16 -p /dev/random)
-          sudo startx
-
+          su
+          cd ~
+          touch .Xauthority
+          xauth generate :0 . trusted
+          xauth add ${HOST}:0 . $(xxd -l 16 -p /dev/random)
+          startx
 
       - name: Checkout repo
         uses: actions/checkout@v2
