@@ -31,7 +31,7 @@ jobs:
 
       - name: Start Xserver
         run: |
-          cd /home/root
+          sudo cd /home/root
           sudo touch .Xauthority
           sudo xauth generate :0 . trusted
           sudo xauth add ${HOST}:0 . $(xxd -l 16 -p /dev/random)
