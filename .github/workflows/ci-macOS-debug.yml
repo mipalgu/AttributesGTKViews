@@ -24,6 +24,9 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.WORKFLOWS_SSH_PRIVATE_KEY }} 
 
+      - name: Install Dependencies
+        run: brew install gtk4 glib glib-networking gobject-introspection pkg-config
+
       - name: Checkout repo
         uses: actions/checkout@v2
       
