@@ -27,7 +27,8 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/rhx/gir2swift.git", branch: "main"),
-        .package(url: "https://github.com/rhx/SwiftGtk.git", branch: "gtk4")
+        .package(url: "https://github.com/rhx/SwiftGtk.git", branch: "gtk4"),
+        .package(url: "https://github.com/mipalgu/Attributes.git", branch: "main")
     ] + dependencies,
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -35,7 +36,7 @@ let package = Package(
         // this package depends on.
         .target(
             name: "AttributesGTKViews",
-            dependencies: [.product(name: "Gtk", package: "SwiftGtk")]
+            dependencies: [.product(name: "Gtk", package: "SwiftGtk"), "Attributes"]
         ),
         .testTarget(
             name: "AttributesGTKViewsTests",
