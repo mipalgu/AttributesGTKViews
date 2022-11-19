@@ -26,6 +26,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          rm /usr/local/bin/2to3-3.11 /usr/local/bin/idle3.11 /usr/local/bin/pydoc3.11 /usr/local/bin/python3.11 /usr/local/bin/python3.11-config
           brew update
           brew install --overwrite gtk4 glib glib-networking gobject-introspection pkg-config
 
