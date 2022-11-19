@@ -31,10 +31,9 @@ jobs:
 
       - name: Start Xserver
         run: |
-          sudo cd /home/root
-          sudo touch .Xauthority
-          sudo xauth generate :0 . trusted
-          sudo xauth add ${HOST}:0 . $(xxd -l 16 -p /dev/random)
+          sudo touch /home/root/.Xauthority
+          sudo xauth generate :0 /home/root trusted
+          sudo xauth add ${HOST}:0 /home/root $(xxd -l 16 -p /dev/random)
           sudo startx
 
 
