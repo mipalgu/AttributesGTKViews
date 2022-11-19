@@ -36,7 +36,7 @@ jobs:
       - name: Start Xserver
         run: |
           sudo echo "allowed_users=anybody" > /etc/X11/Xwrapper.config
-          X -config .dummy-xserver.conf
+          sudo X -config .dummy-xserver.conf
           cd ~
           touch .Xauthority
           xauth generate :0 . trusted
