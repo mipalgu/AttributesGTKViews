@@ -36,7 +36,7 @@ jobs:
           xauth generate :0 . trusted
           xauth add ${HOST}:0 . $(xxd -l 16 -p /dev/random)
           sudo echo "allowed_users=anybody" > /etc/X11/Xwrapper.config
-          sudo X -config ${GITHUB_WORKSPACE}/.dummy-xserver.conf
+          sudo X :0 -config ${GITHUB_WORKSPACE}/.dummy-xserver.conf
           startx
 
       - name: Checkout repo
