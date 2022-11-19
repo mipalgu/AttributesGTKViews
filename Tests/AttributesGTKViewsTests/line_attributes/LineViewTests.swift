@@ -109,7 +109,7 @@ final class LineViewTests: XCTestCase, GTKViewTester {
 
     /// Preview the ``LineView``.
     func testEntryView() {
-        preview { self.view.view }
+        testPreview { self.view.view }
     }
 
     #endif

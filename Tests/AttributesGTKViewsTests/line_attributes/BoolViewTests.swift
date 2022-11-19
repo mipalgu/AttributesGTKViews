@@ -48,7 +48,18 @@ final class BoolViewTests: XCTestCase, GTKViewTester {
 
     /// Preview the ``LineView``.
     func testBoolView() {
-        preview { self.view.widget }
+        testPreview {
+            self.view.widget
+        } task: {
+            for _ in 0..<10 {
+                let newValue = !self.view.attribute.boolValue
+                self.view.attribute.boolValue = newValue
+                XCTAssertEqual(self.view.attribute.boolValue, newValue)
+                XCTAssertEqual(self.view.widget.state, newValue)
+                XCTAssertEqual(self.view.widget.active, newValue)
+                usleep(250000)
+            }
+        }
     }
 
     #endif
