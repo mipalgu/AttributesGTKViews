@@ -54,10 +54,12 @@
 // Fifth Floor, Boston, MA  02110-1301, USA.
 // 
 
-@testable import AttributesGTKViews
+import Attributes
 import Foundation
 import Gtk
 import XCTest
+
+@testable import AttributesGTKViews
 
 /// Test class for ``LineView``.
 final class LineViewTests: XCTestCase, GTKViewTester {
