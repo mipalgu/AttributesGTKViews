@@ -3,6 +3,7 @@
 
 import PackageDescription
 
+/// Additional dependencies for target platforms.
 let dependencies: [Package.Dependency]
 
 #if os(Linux)
@@ -11,23 +12,27 @@ dependencies = [.package(url: "https://github.com/apple/swift-docc-plugin", from
 dependencies = []
 #endif
 
+/// Package manifest.
 let package = Package(
     name: "AttributesGTKViews",
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
+        // Products define the executables and libraries a package produces,
+        // and make them visible to other packages.
         .library(
             name: "AttributesGTKViews",
-            targets: ["AttributesGTKViews"]),
+            targets: ["AttributesGTKViews"]
+        )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/rhx/gir2swift.git", branch: "main"),
-        .package(url: "https://github.com/rhx/SwiftGtk.git",  branch: "gtk4")
+        .package(url: "https://github.com/rhx/SwiftGtk.git", branch: "gtk4")
     ] + dependencies,
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
+        // Targets can depend on other targets in this package, and on products in packages
+        // this package depends on.
         .target(
             name: "AttributesGTKViews",
             dependencies: [.product(name: "Gtk", package: "SwiftGtk")]
@@ -35,6 +40,6 @@ let package = Package(
         .testTarget(
             name: "AttributesGTKViewsTests",
             dependencies: ["AttributesGTKViews"]
-        ),
+        )
     ]
 )
