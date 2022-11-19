@@ -1,4 +1,4 @@
-// LineView.swift 
+// LineViewTests.swift 
 // AttributesGTKViews 
 // 
 // Created by Morgan McColl.
@@ -54,35 +54,54 @@
 // Fifth Floor, Boston, MA  02110-1301, USA.
 // 
 
-import Attributes
+@testable import AttributesGTKViews
+import Foundation
 import Gtk
+import XCTest
 
-struct LineView {
+final class LineViewTests: XCTestCase, GTKViewTester {
 
-    private(set) var attribute: LineAttribute
+    var view = LineView(attribute: .line("Hello World!"))
 
-    private var value: String {
-        get {
-            attribute.lineValue
-        }
-        set {
-            attribute = LineAttribute.line(newValue)
+    override func setUp() {
+        view = LineView(attribute: .line("Hello World!"))
+    }
+
+    func testInit() {
+        XCTAssertEqual(view.attribute.lineValue, "Hello World!")
+    }
+
+    func testViewGetter() {
+        exec { _ in
+            let entry = self.view.view
+            XCTAssertEqual(entry.text, "Hello World!")
         }
     }
 
-    var view: Entry {
-        get {
-            let entry = Entry()
-            entry.text = value
-            return entry
-        }
-        set {
-            guard let value = newValue.text else {
-                self.value = ""
-                return
-            }
-            self.value = value
+    func testViewSetterEmptyEntry() {
+        exec { _ in
+            let newEntry = Entry()
+            self.view.view = newEntry
+            XCTAssertEqual(self.view.view.text, "")
         }
     }
+
+    func testEntrySetter() {
+        exec { _ in
+            let newText = "New Text!"
+            let newEntry = Entry()
+            newEntry.text = newText
+            self.view.view = newEntry
+            XCTAssertEqual(self.view.view.getText(), newText)
+        }
+    }
+
+    #if SHOW_VIEWS
+
+    func testEntryView() {
+        preview { self.view.view }
+    }
+
+    #endif
 
 }

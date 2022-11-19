@@ -1,4 +1,4 @@
-// LineView.swift 
+// GTKViewTester.swift 
 // AttributesGTKViews 
 // 
 // Created by Morgan McColl.
@@ -54,34 +54,35 @@
 // Fifth Floor, Boston, MA  02110-1301, USA.
 // 
 
-import Attributes
 import Gtk
+import XCTest
 
-struct LineView {
+protocol GTKViewTester {
 
-    private(set) var attribute: LineAttribute
+    func exec(_ fn: @escaping (ApplicationRef) -> Void)
 
-    private var value: String {
-        get {
-            attribute.lineValue
-        }
-        set {
-            attribute = LineAttribute.line(newValue)
-        }
+    func preview<Widget>(
+        _ fn: @escaping () -> Widget, width: Int, height: Int
+    ) where Widget: WidgetProtocol
+
+}
+
+extension GTKViewTester {
+
+    func exec(_ fn: @escaping (ApplicationRef) -> Void) {
+        let status = Application.run(startupHandler: nil, activationHandler: fn)
+        XCTAssertEqual(status, Int(EXIT_SUCCESS))
     }
 
-    var view: Entry {
-        get {
-            let entry = Entry()
-            entry.text = value
-            return entry
-        }
-        set {
-            guard let value = newValue.text else {
-                self.value = ""
-                return
-            }
-            self.value = value
+    func preview<Widget>(
+        _ fn: @escaping () -> Widget, width: Int = 320, height: Int = 240
+    ) where Widget: WidgetProtocol {
+        exec { app in
+            let window = ApplicationWindowRef(application: app)
+            window.title = "AttributesGTKViewsTests"
+            window.setDefaultSize(width: width, height: height)
+            window.set(child: fn())
+            window.show()
         }
     }
 
