@@ -59,18 +59,23 @@ import Foundation
 import Gtk
 import XCTest
 
+/// Test class for ``LineView``.
 final class LineViewTests: XCTestCase, GTKViewTester {
 
+    /// The view under test.
     var view = LineView(attribute: .line("Hello World!"))
 
+    /// Reinstantiate the view before every test.
     override func setUp() {
         view = LineView(attribute: .line("Hello World!"))
     }
 
+    /// Test the init sets the attribute correctly.
     func testInit() {
         XCTAssertEqual(view.attribute.lineValue, "Hello World!")
     }
 
+    /// Test the GTK view properties are created correctly for the given attribute.
     func testViewGetter() {
         exec { _ in
             let entry = self.view.view
@@ -78,6 +83,7 @@ final class LineViewTests: XCTestCase, GTKViewTester {
         }
     }
 
+    /// Test the case when a view is overwritten with a null view.
     func testViewSetterEmptyEntry() {
         exec { _ in
             let newEntry = Entry()
@@ -86,6 +92,7 @@ final class LineViewTests: XCTestCase, GTKViewTester {
         }
     }
 
+    /// Test that the attribute is updated successfully for a new GTK view.
     func testEntrySetter() {
         exec { _ in
             let newText = "New Text!"
@@ -98,6 +105,7 @@ final class LineViewTests: XCTestCase, GTKViewTester {
 
     #if SHOW_VIEWS
 
+    /// Preview the ``LineView``.
     func testEntryView() {
         preview { self.view.view }
     }

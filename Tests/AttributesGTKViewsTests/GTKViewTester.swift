@@ -57,23 +57,43 @@
 import Gtk
 import XCTest
 
+/// Helper protocol for performing tests using GTK view.
 protocol GTKViewTester {
 
+    /// Perform some GTK code without displaying the view.
+    /// - Parameter fn: The code to perform that uses GTK.
     func exec(_ fn: @escaping (ApplicationRef) -> Void)
 
+    /// Preform some GTK code that also displays some view.
+    /// - Parameters:
+    ///   - fn: A function that creates a view that will be displayed.
+    ///   - width: The width of the application window containing the view.
+    ///   - height: The height of the applicaton window containing the view.
     func preview<Widget>(
         _ fn: @escaping () -> Widget, width: Int, height: Int
     ) where Widget: WidgetProtocol
 
 }
 
+/// ``GTKViewTester`` default implementation.
 extension GTKViewTester {
 
+    /// Perform some GTK code without displaying the view. This function creates
+    /// a default app that the GTK code is run within. This function also asserts
+    /// that the return status from the application is equal to `EXIT_SUCCESS`.
+    /// - Parameter fn: The code to perform that uses GTK.
     func exec(_ fn: @escaping (ApplicationRef) -> Void) {
         let status = Application.run(startupHandler: nil, activationHandler: fn)
         XCTAssertEqual(status, Int(EXIT_SUCCESS))
     }
 
+    /// Preform some GTK code that also displays some view. This function creates
+    /// a GTK application and window of suitable size, and then adds the view
+    /// created by `fn` as a child of the window.
+    /// - Parameters:
+    ///   - fn: A function that creates a view that will be displayed.
+    ///   - width: The width of the application window containing the view.
+    ///   - height: The height of the applicaton window containing the view.
     func preview<Widget>(
         _ fn: @escaping () -> Widget, width: Int = 320, height: Int = 240
     ) where Widget: WidgetProtocol {

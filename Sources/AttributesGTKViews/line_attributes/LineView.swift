@@ -57,10 +57,17 @@
 import Attributes
 import Gtk
 
+/// View for representing the line case of a `LineAttribute`. This view acts
+/// as a text field for inputting data.
 struct LineView {
 
+    /// The underlying attribute.
+    /// 
+    /// - Warning: This property must be the line case within `LineAttribute`. Runtime
+    /// error will occur when this restriction is not followed.
     private(set) var attribute: LineAttribute
 
+    /// A string accessor for the underlying `attribute`.
     private var value: String {
         get {
             attribute.lineValue
@@ -70,6 +77,7 @@ struct LineView {
         }
     }
 
+    /// The GTK view for the line case in a `LineAttribute`.
     var view: Entry {
         get {
             let entry = Entry()
