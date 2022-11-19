@@ -30,7 +30,12 @@ jobs:
           sudo apt install libgtk-4-bin libgtk-4-common libgtk-4-dev libgtk-4-doc libcogl-pango-dev libcogl-path-dev libcogl-dev libpango1.0-dev gir1.2-pango-1.0 libgdk-pixbuf2.0-dev gir1.2-gdkpixbuf-2.0 libgraphene-1.0-dev gir1.2-graphene-1.0 libglib2.0-dev glib-networking libatk1.0-dev libatk-bridge2.0-dev libcogl-dev libcogl-pango-dev gobject-introspection libgirepository1.0-dev libxml2-dev jq xorg openbox xauth
 
       - name: Start Xserver
-        run: sudo startx
+        run: |
+          cd /home/root
+          sudo touch .Xauthority
+          sudo xauth generate :0 . trusted
+          sudo xauth add ${HOST}:0 . $(xxd -l 16 -p /dev/random)
+          sudo startx
 
 
       - name: Checkout repo
