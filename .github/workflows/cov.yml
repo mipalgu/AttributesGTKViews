@@ -33,6 +33,9 @@ jobs:
           sudo apt update
           sudo apt install libgtk-4-bin libgtk-4-common libgtk-4-dev libgtk-4-doc libcogl-pango-dev libcogl-path-dev libcogl-dev libpango1.0-dev gir1.2-pango-1.0 libgdk-pixbuf2.0-dev gir1.2-gdkpixbuf-2.0 libgraphene-1.0-dev gir1.2-graphene-1.0 libglib2.0-dev glib-networking libatk1.0-dev libatk-bridge2.0-dev libcogl-dev libcogl-pango-dev gobject-introspection libgirepository1.0-dev libxml2-dev jq
 
+      - name: Start XServer
+        run: startx
+
       - name: Checkout repo
         uses: actions/checkout@v2
 
