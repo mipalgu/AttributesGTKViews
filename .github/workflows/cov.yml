@@ -42,6 +42,7 @@ jobs:
           touch .Xauthority
           xauth generate :0 . trusted
           xauth add ${HOST}:0 . $(xxd -l 16 -p /dev/random)
+          export DISPLAY=:0
           echo $DISPLAY
           sudo xhost +
           sudo echo "allowed_users=anybody" > /etc/X11/Xwrapper.config
