@@ -35,7 +35,6 @@ jobs:
         uses: mipalgu/swiftpm-generate-documentation@main
         with:
             swift-version: "5.7"
-            hosting-base-path: "/"
 
       - name: Pages Deployment
         uses: peaceiris/actions-gh-pages@v3
