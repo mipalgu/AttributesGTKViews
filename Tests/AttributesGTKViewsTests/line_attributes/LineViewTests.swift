@@ -62,19 +62,21 @@ import XCTest
 @testable import AttributesGTKViews
 
 /// Test class for ``LineView``.
-final class LineViewTests: XCTestCase, GTKViewTester {
+final class LineViewTests: GTKTestCase {
 
     /// The view under test.
-    var view = LineView(attribute: .line("Hello World!"))
+    var view: LineView!
 
     /// Reinstantiate the view before every test.
-    override func setUp() {
+    override func gtkSetUp() async throws {
         view = LineView(attribute: .line("Hello World!"))
     }
 
     /// Test the init sets the attribute correctly.
     func testInit() {
-        XCTAssertEqual(view.attribute.lineValue, "Hello World!")
+        exec { _ in
+            XCTAssertEqual(self.view.attribute.lineValue, "Hello World!")
+        }
     }
 
     /// Test the GTK view properties are created correctly for the given attribute.
@@ -109,7 +111,7 @@ final class LineViewTests: XCTestCase, GTKViewTester {
 
     /// Preview the ``LineView``.
     func testEntryView() {
-        testPreview { self.view.view }
+        preview { self.view.view }
     }
 
     #endif
