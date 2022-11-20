@@ -37,8 +37,8 @@ jobs:
       #  run: sed -i 's/git@github.com:/https:\/\/${{ secrets.ACCESS_TOKEN }}@github.com\//g' Package.swift
 
       - name: Debug Build
-        run: swift build -c debug
+        run: xcrun --toolchain swift 5.7 --run swift build -c debug
 
       - name: Debug Test
-        run: swift test
+        run: xcrun --toolchain swift 5.7 --run swift test
 
