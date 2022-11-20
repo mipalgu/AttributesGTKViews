@@ -28,7 +28,7 @@ jobs:
         run: |
           rm /usr/local/bin/2to3-3.11 /usr/local/bin/idle3.11 /usr/local/bin/pydoc3.11 /usr/local/bin/python3.11 /usr/local/bin/python3.11-config
           brew update
-          brew install gtk4 glib glib-networking gobject-introspection pkg-config atk
+          brew install gtk4 glib glib-networking gobject-introspection pkg-config atk pango libxml2 cogl gdk-pixbuf
 
       - name: Checkout repo
         uses: actions/checkout@v2
