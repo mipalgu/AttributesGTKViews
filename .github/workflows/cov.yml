@@ -12,6 +12,8 @@ jobs:
 
   exec-cov:
     runs-on: ubuntu-22.04
+    env:
+      DISPLAY: ':99'
 
     steps:
       - uses: swift-actions/setup-swift@v1
@@ -35,22 +37,10 @@ jobs:
 
       - name: Checkout repo
         uses: actions/checkout@v2
-
-      - name: Start Xserver
+ 
+      - name: Setup headless environment
         run: |
-          cd ~
-          touch .Xauthority
-          xauth generate :0 . trusted
-          xauth add ${HOST}:0 . $(xxd -l 16 -p /dev/random)
-          export DISPLAY=:0
-          echo $DISPLAY
-          sudo xhost +
-          sudo echo "allowed_users=anybody" > /etc/X11/Xwrapper.config
-          sudo X :0 -config ${GITHUB_WORKSPACE}/.dummy-xserver.conf
-          startx
-
-      #- name: Reconfigure Private Repo URLs
-      #  run: sed -i 's/git@github.com:/https:\/\/${{ secrets.ACCESS_TOKEN }}@github.com\//g' Package.swift
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
       - name: Run tests
         run: swift test --enable-code-coverage
