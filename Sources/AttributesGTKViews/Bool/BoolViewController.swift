@@ -15,6 +15,7 @@ final class BoolViewController {
             guard let self else { return }
             self.view.widget.state = value
         }
+        self.view.widget.state = self.viewModel.attribute.boolValue
     }
 
 }
