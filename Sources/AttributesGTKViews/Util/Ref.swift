@@ -56,6 +56,84 @@
  *
  */
 
+/// Create a reference type for an underlying value type.
+@dynamicMemberLookup
+public class ConstRef<T>: Identifiable {
+
+    /// A getter for the underlying object.
+    fileprivate var get: () -> T
+
+    /// Get the underlying value.
+    public var value: T {
+        self.get()
+    }
+
+    /// Initialise the Ref by copying the underlying object.
+    /// - Parameter value: The object to refer to in this object.
+    public convenience init(copying value: T) {
+        // swiftlint:disable:next trailing_closure
+        self.init(get: { value })
+    }
+
+    /// Initialise this ref by passing a getter function to the underlying type.
+    /// - Parameter get: The getter function.
+    public init(get: @escaping () -> T) {
+        self.get = get
+    }
+
+    /// Access the underlying objects types by using a keypath.
+    public subscript<U>(dynamicMember keyPath: KeyPath<T, U>) -> ConstRef<U> {
+        ConstRef<U> { self.get()[keyPath: keyPath] }
+    }
+
+}
+
+/// Equatable conformance for ConstRef.
+extension ConstRef: Equatable where T: Equatable {
+
+    /// Value-type equality.
+    /// - Parameters:
+    ///   - lhs: The Ref on the lhs of the operator.
+    ///   - rhs: The Ref on the rhs of the operator.
+    /// - Returns: Whether lhs is equal to rhs.
+    public static func == (lhs: ConstRef<T>, rhs: ConstRef<T>) -> Bool {
+        lhs.value == rhs.value
+    }
+
+}
+
+/// Hashable conformance for ConstRef.
+extension ConstRef: Hashable where T: Hashable {
+
+    /// Hash function for ConstRef.
+    /// - Parameter hasher: The hasher used.
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.value)
+    }
+
+}
+
+/// Encodable conformance for ConstRef.
+extension ConstRef: Encodable where T: Encodable {
+
+    /// Encode ConstRef into an encoder.
+    /// - Parameter encoder: The encoder to use.
+    public func encode(to encoder: Encoder) throws {
+        try self.value.encode(to: encoder)
+    }
+
+}
+
+/// Provides a getter for converting this type into an array.
+extension ConstRef where T: RandomAccessCollection, T.Index: Hashable {
+
+    /// Convert this type into an array-equivalent type.
+    public var constRefArray: [ConstRef<T.Element>] {
+        self.value.indices.map { self[$0] }
+    }
+
+}
+
 // swiftlint:disable type_name
 
 /// A class used to convert value-types into reference types with mutation.
