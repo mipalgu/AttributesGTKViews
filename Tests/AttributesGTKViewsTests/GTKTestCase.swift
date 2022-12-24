@@ -3,6 +3,14 @@ import XCTest
 
 class GTKTestCase: XCTestCase {
 
+    /// An error for when polling a condition and it times out.
+    private struct TimeoutError: Error {
+
+        /// The error message.
+        let description: String = "Timed out."
+
+    }
+
     func gtkSetUp() async throws {}
 
     func gtkTearDown() async throws {}
@@ -69,7 +77,7 @@ class GTKTestCase: XCTestCase {
         XCTAssertEqual(status, Int(EXIT_SUCCESS))
     }
 
-    private func poll(_ task: @escaping () async throws -> Void) throws {
+    func poll(_ task: @escaping () async throws -> Void) throws {
         let data = SharedData()
         let dataActor = SharedDataActor(data: data)
         Task {
@@ -78,6 +86,28 @@ class GTKTestCase: XCTestCase {
             } catch {
                 await dataActor.data.thrownError = error
             }
+            await dataActor.data.running = false
+        }
+        while data.running {
+            usleep(5000)
+        }
+        if let thrownError = data.thrownError {
+            throw thrownError
+        }
+    }
+
+    func pollCondition(timeout: Int = 60, _ task: @escaping () async -> Bool) throws {
+        let data = SharedData()
+        let dataActor = SharedDataActor(data: data)
+        Task {
+            for _ in 0..<timeout {
+                if await task() {
+                    await dataActor.data.running = false
+                    return
+                }
+                sleep(1)
+            }
+            await dataActor.data.thrownError = TimeoutError()
             await dataActor.data.running = false
         }
         while data.running {

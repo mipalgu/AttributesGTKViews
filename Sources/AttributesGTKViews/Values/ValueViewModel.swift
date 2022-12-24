@@ -67,7 +67,7 @@ import Attributes
 public final class ValueViewModel<T>: GlobalChangeNotifier {
 
     /// The callback that is triggered when the value changes.
-    private var _onValueChange: (T) -> Void = { _ in }
+    private var _onValueChange: (ValueViewModel<T>, T) -> Void = { _, _ in }
 
     /// A reference to the value associated with this view model.
     private let ref: Value<T>
@@ -89,7 +89,7 @@ public final class ValueViewModel<T>: GlobalChangeNotifier {
             ref.value
         } set {
             ref.value = newValue
-            _onValueChange(value)
+            _onValueChange(self, value)
         }
     }
 
@@ -327,13 +327,13 @@ public final class ValueViewModel<T>: GlobalChangeNotifier {
     }
 
     /// Manually trigger an `objectWillChange` notification.
-    public func onValueChange(_ callback: @escaping (T) -> Void) {
+    public func onValueChange(_ callback: @escaping (ValueViewModel<T>, T) -> Void) {
         self._onValueChange = callback
     }
 
     /// Manually trigger all change events for this view model.
     public func send() {
-        self._onValueChange(value)
+        self._onValueChange(self, value)
     }
 
 }

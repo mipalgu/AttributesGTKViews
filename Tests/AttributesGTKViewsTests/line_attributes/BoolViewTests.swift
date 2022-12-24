@@ -51,6 +51,23 @@ final class BoolViewTests: GTKTestCase {
         }
     }
 
+    func testCallbackIsTriggeredOnSetState() {
+        exec { [self] _ in
+            var reportedView: BoolView?
+            var reportedValue = false
+            self.view.onStateChange { view, value in
+                reportedView = view
+                reportedValue = value
+            }
+            self.view.widget.state = true
+            XCTAssertNotNil(reportedView)
+            XCTAssertTrue(reportedValue)
+            if let reportedView = reportedView {
+                XCTAssertIdentical(reportedView, self.view)
+            }
+        }
+    }
+
     #if SHOW_VIEWS
 
     /// Preview the ``BoolView``.
