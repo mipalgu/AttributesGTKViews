@@ -59,7 +59,7 @@ final class BoolViewTests: GTKTestCase {
                 reportedView = view
                 reportedValue = value
             }
-            self.view.widget.state = true
+            self.view.currentState = true
             XCTAssertNotNil(reportedView)
             XCTAssertTrue(reportedValue)
             if let reportedView = reportedView {

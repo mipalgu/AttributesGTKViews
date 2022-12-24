@@ -138,16 +138,14 @@ public final class BoolViewController {
     init(viewModel: BoolViewModel, view: BoolView) {
         self.viewModel = viewModel
         self.view = view
-        self.view.widget.state = self.viewModel.value
+        self.view.currentState = self.viewModel.value
         self.view.onStateChange { [weak self] _, value in
-            print("onStateChange")
             guard let self else { return }
             self.viewModel.value = value
         }
         self.viewModel.onValueChange { [weak self] _, value in
-            print("onValueChange")
             guard let self else { return }
-            self.view.widget.state = value
+            self.view.currentState = value
         }
     }
 

@@ -62,11 +62,11 @@ final class BoolViewControllerTests: GTKTestCase {
         controller.viewModel.value = false
         XCTAssertFalse(controller.viewModel.value)
         XCTAssertFalse(controller.view.currentState)
-        controller.view.widget.set(state: true)
-        try self.pollCondition(timeout: 10) { controller.viewModel.value }
+        controller.view.currentState = true
+        XCTAssertTrue(controller.viewModel.value)
         XCTAssertTrue(controller.view.currentState)
-        controller.view.widget.set(state: false)
-        try self.pollCondition(timeout: 10) { !controller.viewModel.value }
+        controller.view.currentState = false
+        XCTAssertFalse(controller.viewModel.value)
         XCTAssertFalse(controller.view.currentState)
     }
 
