@@ -1,3 +1,4 @@
 {
-    "swift.disableAutoResolve": true
+    "swift.disableAutoResolve": true,
+    "swift.buildArguments": ["-Xswiftc", "-DSHOW_VIEWS", "-Xswiftc", "-emit-symbol-graph"]
 }
